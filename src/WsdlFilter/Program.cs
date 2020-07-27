@@ -50,7 +50,7 @@ namespace WsdlFilter
 
         private static ICommandHandler CreateRootHandler()
         {
-            return CommandHandler.Create((Action<bool, FileInfo, FileInfo, FileInfo, string, string, string, bool>)((removeDocumentation, input, output, intermediate, keepOperations, fireAndForget, removePortTypes, embedCommandLineConfig) =>
+            return CommandHandler.Create((Action<bool, FileInfo, FileInfo, FileInfo, string, string, string, bool>)((removeDocumentation, input, output, intermediate, keepOperations, fireAndForget, removePortTypes, embedConfig) =>
             {
                 var fullCommandLine = string.Join(" ", Environment.GetCommandLineArgs());
                 var removePortTypesSplit = removePortTypes?.Split(',') ?? Array.Empty<string>();
@@ -67,7 +67,7 @@ namespace WsdlFilter
                     sd.Write(intermediate.FullName);
                 }
 
-                var wsdlProcessingOptions = new WsdlProcessingOptions(removeDocumentation, removePortTypesSplit, keepOperationsSplit, convertToFireAndForgetSplit, embedCommandLineConfig, fullCommandLine);
+                var wsdlProcessingOptions = new WsdlProcessingOptions(removeDocumentation, removePortTypesSplit, keepOperationsSplit, convertToFireAndForgetSplit, embedConfig, fullCommandLine);
 
                 Console.WriteLine($"Processing");
                 sd.Process(wsdlProcessingOptions);
