@@ -13,6 +13,11 @@ namespace WsdlFilter
                 sd.RemoveDocumentation();
             }
 
+            if (options.EmbedCommandLineConfig)
+            {
+                sd.AddCommandLineConfig(options.RawProcessArguments);
+            }
+
             if (options.RemovePortTypes.Any())
             {
                 sd.RemovePortTypes(options.RemovePortTypes);
@@ -34,9 +39,22 @@ namespace WsdlFilter
             sd.RemoveUnreferencesMessages();
         }
 
-        public static void RemoveDocumentation(this ServiceDescription sd)
+        private static void RemoveDocumentation(this ServiceDescription sd)
         {
             sd.DocumentationElement = null;
+        }
+
+        public static void AddCommandLineConfig(this ServiceDescription sd, string rawCommandLine)
+        {
+            // Ensure documentation element exists as we might just have deleted it.
+            if (sd.DocumentationElement == null)
+            {
+                sd.Documentation = "";
+            }
+
+            var xmlElement = sd.DocumentationElement.OwnerDocument.CreateElement("commandline");
+            xmlElement.InnerText = rawCommandLine;
+            sd.DocumentationElement.PrependChild(xmlElement);
         }
 
         public static void RemovePortTypes(this ServiceDescription sd, IEnumerable<string> removePortTypes)

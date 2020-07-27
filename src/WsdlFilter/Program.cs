@@ -27,40 +27,55 @@ namespace WsdlFilter
                     description: "Comma separated list of operations to keep"),
                 new Option<string>(
                     new [] { "--remove-port-types", "-rpt" } ,
-                    description: "Comma separated list of operations to keep"),
+                    description: "Comma separated list of operations to remove"),
                 new Option<string>(
                     new [] { "--fire-and-forget", "-ff"},
                     description: "Comma separated list of operations to convert tot fire and forget"),
                 new Option<bool>(
                     new [] { "--remove-documentation" , "-rd"} ,
-                    "Remove documentation")
+                    "Remove documentation"),
+                new Option<bool>(
+                    new [] { "--embed-config" },
+                     () => true,
+                    "Embed command line configuration inside output wsdl.")
                 };
 
             rootCommand.Description = "Wsdl Filter";
             rootCommand.Handler = CreateRootHandler();
+
+            Console.WriteLine(rootCommand.Description);
 
             return await rootCommand.InvokeAsync(args);
         }
 
         private static ICommandHandler CreateRootHandler()
         {
-            return CommandHandler.Create((Action<bool, FileInfo, FileInfo, FileInfo, string, string, string>)((removeDocumentation, input, output, intermediate, keepOperations, fireAndForget, removePortTypes) =>
+            return CommandHandler.Create((Action<bool, FileInfo, FileInfo, FileInfo, string, string, string, bool>)((removeDocumentation, input, output, intermediate, keepOperations, fireAndForget, removePortTypes, embedCommandLineConfig) =>
             {
+                var fullCommandLine = string.Join(" ", Environment.GetCommandLineArgs());
                 var removePortTypesSplit = removePortTypes?.Split(',') ?? Array.Empty<string>();
                 var keepOperationsSplit = keepOperations?.Split(',') ?? Array.Empty<string>();
                 var convertToFireAndForgetSplit = fireAndForget?.Split(',') ?? Array.Empty<string>();
+
+                Console.WriteLine($"Reading from {input}");
 
                 var sd = ServiceDescription.Read(input.FullName);
 
                 if (intermediate != null)
                 {
+                    Console.WriteLine($"Writing intermediate to {intermediate.FullName}");
                     sd.Write(intermediate.FullName);
                 }
 
-                var wsdlProcessingOptions = new WsdlProcessingOptions(removeDocumentation, removePortTypesSplit, keepOperationsSplit, convertToFireAndForgetSplit);
+                var wsdlProcessingOptions = new WsdlProcessingOptions(removeDocumentation, removePortTypesSplit, keepOperationsSplit, convertToFireAndForgetSplit, embedCommandLineConfig, fullCommandLine);
 
+                Console.WriteLine($"Processing");
                 sd.Process(wsdlProcessingOptions);
+
+                Console.WriteLine($"Writing output to {output.FullName}");
                 sd.Write(output.FullName);
+
+                Console.WriteLine($"Done.");
             }));
         }
     }
