@@ -52,7 +52,7 @@ namespace WsdlFilter
                 sd.Documentation = "";
             }
 
-            var xmlElement = sd.DocumentationElement.OwnerDocument.CreateElement("commandline");
+            var xmlElement = sd.DocumentationElement.OwnerDocument.CreateElement("commandline", sd.DocumentationElement.NamespaceURI);
             xmlElement.InnerText = rawCommandLine;
             sd.DocumentationElement.PrependChild(xmlElement);
         }
