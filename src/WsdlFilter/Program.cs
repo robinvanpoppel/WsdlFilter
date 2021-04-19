@@ -37,7 +37,10 @@ namespace WsdlFilter
                 new Option<bool>(
                     new [] { "--embed-config" },
                      () => true,
-                    "Embed command line configuration inside output wsdl.")
+                    "Embed command line configuration inside output wsdl."),
+                new Option<bool>(
+                    new [] { "--flatten" } ,
+                    "Flatten imports"),
                 };
 
             rootCommand.Description = "Wsdl Filter";
@@ -50,7 +53,7 @@ namespace WsdlFilter
 
         private static ICommandHandler CreateRootHandler()
         {
-            return CommandHandler.Create((Action<bool, FileInfo, FileInfo, FileInfo, string, string, string, bool>)((removeDocumentation, input, output, intermediate, keepOperations, fireAndForget, removePortTypes, embedConfig) =>
+            return CommandHandler.Create((Action<bool, FileInfo, FileInfo, FileInfo, string, string, string, bool, bool>)((removeDocumentation, input, output, intermediate, keepOperations, fireAndForget, removePortTypes, embedConfig, flatten) =>
             {
                 var fullCommandLine = string.Join(" ", Environment.GetCommandLineArgs());
                 var removePortTypesSplit = removePortTypes?.Split(',') ?? Array.Empty<string>();
@@ -67,7 +70,7 @@ namespace WsdlFilter
                     sd.Write(intermediate.FullName);
                 }
 
-                var wsdlProcessingOptions = new WsdlProcessingOptions(removeDocumentation, removePortTypesSplit, keepOperationsSplit, convertToFireAndForgetSplit, embedConfig, fullCommandLine);
+                var wsdlProcessingOptions = new WsdlProcessingOptions(removeDocumentation, removePortTypesSplit, keepOperationsSplit, convertToFireAndForgetSplit, embedConfig, fullCommandLine, flatten, input.Directory);
 
                 Console.WriteLine($"Processing");
                 sd.Process(wsdlProcessingOptions);

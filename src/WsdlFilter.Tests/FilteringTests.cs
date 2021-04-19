@@ -14,7 +14,7 @@ namespace WsdlFilter.Tests
             using (var inputWsdlStream = typeof(FilteringTests).Assembly.GetManifestResourceStream("WsdlFilter.Tests.Calculator.wsdl"))
             {
                 var sd = ServiceDescription.Read(inputWsdlStream);
-                var wsdlProcessingOptions = new WsdlProcessingOptions(removeDocumentation: false, removePortTypes: null, keepOperations: null, convertToFireAndForget: null, embedCommandLineConfig: false, rawProcessArguments: null);
+                var wsdlProcessingOptions = new WsdlProcessingOptions(removeDocumentation: false, removePortTypes: null, keepOperations: null, convertToFireAndForget: null, embedCommandLineConfig: false, rawProcessArguments: null, flatten: false, wsdlDirectoryInfo: null);
 
                 sd.Process(wsdlProcessingOptions);
 
@@ -33,7 +33,7 @@ namespace WsdlFilter.Tests
             using (var inputWsdlStream = typeof(FilteringTests).Assembly.GetManifestResourceStream("WsdlFilter.Tests.Calculator.wsdl"))
             {
                 var sd = ServiceDescription.Read(inputWsdlStream);
-                var wsdlProcessingOptions = new WsdlProcessingOptions(removeDocumentation: true, removePortTypes: null, keepOperations: null, convertToFireAndForget: null, embedCommandLineConfig: false, rawProcessArguments: null);
+                var wsdlProcessingOptions = new WsdlProcessingOptions(removeDocumentation: true, removePortTypes: null, keepOperations: null, convertToFireAndForget: null, embedCommandLineConfig: false, rawProcessArguments: null, flatten: false, wsdlDirectoryInfo: null);
 
                 sd.Process(wsdlProcessingOptions);
 
@@ -53,7 +53,7 @@ namespace WsdlFilter.Tests
             {
                 var keepOperations = new[] { "add" };
                 var sd = ServiceDescription.Read(inputWsdlStream);
-                var wsdlProcessingOptions = new WsdlProcessingOptions(removeDocumentation: false, removePortTypes: null, keepOperations, convertToFireAndForget: null, embedCommandLineConfig: false, rawProcessArguments: null);
+                var wsdlProcessingOptions = new WsdlProcessingOptions(removeDocumentation: false, removePortTypes: null, keepOperations, convertToFireAndForget: null, embedCommandLineConfig: false, rawProcessArguments: null, flatten: false, wsdlDirectoryInfo: null);
 
                 sd.Process(wsdlProcessingOptions);
 
@@ -73,7 +73,7 @@ namespace WsdlFilter.Tests
             {
                 var convertToFireAndForget = new[] { "add" };
                 var sd = ServiceDescription.Read(inputWsdlStream);
-                var wsdlProcessingOptions = new WsdlProcessingOptions(removeDocumentation: false, removePortTypes: null, keepOperations: null, convertToFireAndForget, embedCommandLineConfig: false, rawProcessArguments: null);
+                var wsdlProcessingOptions = new WsdlProcessingOptions(removeDocumentation: false, removePortTypes: null, keepOperations: null, convertToFireAndForget, embedCommandLineConfig: false, rawProcessArguments: null, flatten: false, wsdlDirectoryInfo: null);
 
                 sd.Process(wsdlProcessingOptions);
 
@@ -92,7 +92,7 @@ namespace WsdlFilter.Tests
             using (var inputWsdlStream = typeof(FilteringTests).Assembly.GetManifestResourceStream("WsdlFilter.Tests.Calculator.wsdl"))
             {
                 var sd = ServiceDescription.Read(inputWsdlStream);
-                var wsdlProcessingOptions = new WsdlProcessingOptions(removeDocumentation: false, removePortTypes: null, keepOperations: null, convertToFireAndForget: null, embedCommandLineConfig: true, "--input=input.wsdl --output=output.wsdl");
+                var wsdlProcessingOptions = new WsdlProcessingOptions(removeDocumentation: false, removePortTypes: null, keepOperations: null, convertToFireAndForget: null, embedCommandLineConfig: true, "--input=input.wsdl --output=output.wsdl", flatten: false, wsdlDirectoryInfo: null);
 
                 sd.Process(wsdlProcessingOptions);
 
@@ -112,7 +112,7 @@ namespace WsdlFilter.Tests
             using (var inputWsdlStream = typeof(FilteringTests).Assembly.GetManifestResourceStream("WsdlFilter.Tests.Calculator.wsdl"))
             {
                 var sd = ServiceDescription.Read(inputWsdlStream);
-                var wsdlProcessingOptions = new WsdlProcessingOptions(removeDocumentation: true, removePortTypes: null, keepOperations: null, convertToFireAndForget: null, embedCommandLineConfig: true, "--input=input.wsdl --output=output.wsdl");
+                var wsdlProcessingOptions = new WsdlProcessingOptions(removeDocumentation: true, removePortTypes: null, keepOperations: null, convertToFireAndForget: null, embedCommandLineConfig: true, "--input=input.wsdl --output=output.wsdl", flatten: false, wsdlDirectoryInfo: null);
 
                 sd.Process(wsdlProcessingOptions);
 

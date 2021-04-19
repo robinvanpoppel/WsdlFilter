@@ -65,5 +65,10 @@ namespace WsdlFilter
         {
             return serviceDescription.Services.Cast<Service>();
         }
+
+        public static IEnumerable<Import> GetImports(this ServiceDescription serviceDescription)
+        {
+            return serviceDescription.Imports.Cast<Import>();
+        }
     }
 }
